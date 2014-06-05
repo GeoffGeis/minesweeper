@@ -21,5 +21,8 @@ class Detector
 
   def map_position
     @proxi.board[@row - 1][@col - 1] = @value
+    @row = 0
+    @col = 0
+    @value = 0
   end
 end
