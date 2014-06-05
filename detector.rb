@@ -3,8 +3,8 @@ class Detector
 
   def initialize(proxi)
     @proxi = proxi
-    @row = row
-    @col = col
+    @row = 0
+    @col = 0
     @value = 0
   end
 
