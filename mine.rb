@@ -3,14 +3,17 @@ class Mine
 
   def initialize(proxi)
     @proxi = proxi
-    @row = Random.rand(1..@proxi.board.length)
-    @col = Random.rand(1..@proxi.board[0].length)
+    @row = 0
+    @col = 0
+    @random = Random.new
     check_position
   end
 
   def check_position
     if @proxi.board[@row - 1][@col - 1] != "L"
-      initialize(@proxi)
+      @row = @random.rand(1..@proxi.board.length)
+      @col = @random.rand(1..@proxi.board[0].length)
+      check_position
     else
       map_position
     end
