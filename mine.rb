@@ -10,7 +10,7 @@ class Mine
 
   def check_position
     if @proxi.board[@row - 1][@col - 1] != "L"
-      initialize
+      initialize(@proxi)
     else
       map_position
     end
