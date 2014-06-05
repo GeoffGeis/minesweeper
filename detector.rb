@@ -1,7 +1,7 @@
 class Detector
   attr_accessor :proxi, :row, :col, :value
 
-  def initialize(proxi, row, col)
+  def initialize(proxi)
     @proxi = proxi
     @row = row
     @col = col
