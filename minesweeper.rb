@@ -3,9 +3,10 @@ require './mine.rb'
 require './detector.rb'
 
 class Minesweeper
-  attr_accessor :board, :proxi, :mine_count, :mines, :row, :col, :detector
+  attr_accessor :debug, :board, :proxi, :mine_count, :mines, :row, :col, :detector
 
-  def initialize
+  def initialize(debug = true)
+    @debug = debug
     puts "Minefield size:" 
     @board = Board.new
     @proxi = Board.new(@board.size)
@@ -19,6 +20,9 @@ class Minesweeper
   end
 
   def game
+    if @debug 
+      @proxi.print_board
+    end
     @board.print_board
     puts "pick a row:"
     @row = gets.chomp.to_i
