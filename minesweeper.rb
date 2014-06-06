@@ -14,11 +14,11 @@ class Minesweeper
     @row = 0 
     @col = 0
     @detector = Detector.new(@proxi)
+    puts "Lets play minesweeper!"
     game
   end
 
   def game
-    puts "Lets play minesweeper!"
     @board.print_board
     puts "pick a row:"
     @row = gets.chomp.to_i
@@ -27,10 +27,10 @@ class Minesweeper
     puts "flag position? (y/n)"
     flag = gets.chomp.downcase.to_s
     if flag == "y"
-      flag_grid
+      flag_position
     else
-      @detector.row = @row
-      @detector.col = @col
+      @detector.row = @row 
+      @detector.col = @col 
       if @detector.mine? == true
         @proxi.print_board
         puts "game over"
@@ -39,22 +39,30 @@ class Minesweeper
       @detector.detect
       @detector.map_position
       @board.board[@row - 1][@col - 1] = @proxi.board[@row - 1][@col - 1]
+      check_board
+    end
+  end
+
+  def flag_position
+    if @proxi.board[@row - 1][@col - 1] == "*"
+      @mine_count -= 1
+      @board.board[@row - 1][@col - 1] = "!"
+      check_board
+    else
+      @board.board[@row - 1][@col - 1] = "!"
       game
     end
   end
 
-  def flag_grid
-    if @proxi.board[@row - 1][@col - 1] == "*"
-      @mine_count -= 1
-      @proxi.board[@row - 1][@col - 1] = "P"
-      @board.board[@row - 1][@col - 1] = "P"
-      if @mine_count == 0
-        @proxi.print_board
-        puts "you win"
-        continue?
+  def check_board
+    if @mine_count == 0 
+      unless ["L"].any? { @proxi.board }
+        game
       end
+      @proxi.print_board
+      puts "you win"
+      continue?
     else
-      @board.board[@row - 1][@col - 1] = "P"
       game
     end
   end
