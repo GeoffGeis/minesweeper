@@ -8,6 +8,14 @@ class Detector
     @value = 0
   end
 
+  def mine?
+    if @proxi.board[@row - 1][@col - 1] == "*"
+      true
+    else
+      false
+    end
+  end
+
   def detect
     @value += 1 if @proxi.board[@row - 2][@col - 1] == "*"
     @value += 1 if @proxi.board[@row - 2][@col - 2] == "*"

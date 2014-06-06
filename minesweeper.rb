@@ -3,13 +3,14 @@ require './mine.rb'
 require './detector.rb'
 
 class Minesweeper
-  attr_accessor :board, :proxi, :mines, :row, :col, :detector
+  attr_accessor :board, :proxi, :mine_count, :mines, :row, :col, :detector
 
   def initialize
     puts "Minefield size:" 
     @board = Board.new
     @proxi = Board.new(@board.size)
-    @mines = (1..@board.size * 2).map { |i| i = Mine.new(@proxi) }
+    @mine_count = @board.size * 2
+    @mines = (1..@mine_count).map { |i| i = Mine.new(@proxi) }
     @row = 0 
     @col = 0
     @detector = Detector.new(@proxi)
@@ -17,6 +18,68 @@ class Minesweeper
   end
 
   def game
+    puts "Lets play minesweeper!"
+    @board.print_board
+    puts "pick a row:"
+    @row = gets.chomp.to_i
+    puts "pick a col:"
+    @col = gets.chomp.to_i
+    puts "flag position? (y/n)"
+    flag = gets.chomp.downcase.to_s
+    if flag == "y"
+      flag_grid
+    else
+      @detector.row = @row
+      @detector.col = @col
+      if @detector.mine? == true
+        @proxi.print_board
+        puts "game over"
+        continue?
+      end
+      @detector.detect
+      @detector.map_position
+      @board.board[@row - 1][@col - 1] = @proxi.board[@row - 1][@col - 1]
+      game
+    end
+  end
+
+  def flag_grid
+    if @proxi.board[@row - 1][@col - 1] == "*"
+      @mine_count -= 1
+      @proxi.board[@row - 1][@col - 1] = "P"
+      @board.board[@row - 1][@col - 1] = "P"
+      if @mine_count == 0
+        @proxi.print_board
+        puts "you win"
+        continue?
+      end
+    else
+      @board.board[@row - 1][@col - 1] = "P"
+      game
+    end
+  end
+
+  def continue?
+    puts "continue? (y/n)"
+    continue = gets.chomp.downcase.to_s
+    if continue == 'y'
+      reset
+    else
+      puts "see you later"
+      exit
+    end
+  end
+
+  def reset
+    puts "Minefield size:" 
+    @board = Board.new
+    @proxi = Board.new(@board.size)
+    @mine_count = @board.size * 2
+    @mines = (1..@mine_count).map { |i| i = Mine.new(@proxi) }
+    @row = 0 
+    @col = 0
+    @detector = Detector.new(@proxi)
+    game
   end
 end
 
