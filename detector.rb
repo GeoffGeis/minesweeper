@@ -1,7 +1,8 @@
 class Detector
-  attr_accessor :proxi, :row, :col, :value
+  attr_accessor :board, :proxi, :row, :col, :value
 
-  def initialize(proxi)
+  def initialize(board, proxi)
+    @board = board
     @proxi = proxi
     @row = 0
     @col = 0
@@ -28,8 +29,26 @@ class Detector
 
   def map_position
     @proxi.board[@row - 1][@col - 1] = @value
-    @row = 0
-    @col = 0
-    @value = 0
+    @board.board[@row - 1][@col - 1] = @value
+  end
+
+  def recursion
+    if @proxi.board[@row - 1][@col - 1] == "0"
+      (@row - 1..@row + 1).each do |r|
+        (@col - 1..@col + 1).each do |c|
+          unless (r - 1 < 0 || r - 1 > @proxi.size - 1) || (c - 1 < 0 || c - 1 > @proxi.size - 1)
+            if @proxi.board[r - 1][c - 1] == "0"
+              @row, @col = r, c
+              map_position
+              recursion
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def reset
+    @row, @col, @value = 0, 0, 0
   end
 end

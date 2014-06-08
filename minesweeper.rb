@@ -14,7 +14,7 @@ class Minesweeper
     @mines = (1..@mine_count).map { |i| i = Mine.new(@proxi) }
     @row = 0 
     @col = 0
-    @detector = Detector.new(@proxi)
+    @detector = Detector.new(@board, @proxi)
     puts "Lets play minesweeper!"
     game
   end
@@ -42,7 +42,8 @@ class Minesweeper
       end
       @detector.detect
       @detector.map_position
-      @board.board[@row - 1][@col - 1] = @proxi.board[@row - 1][@col - 1]
+      @detector.recursion
+      @detector.reset
       check_board
     end
   end
@@ -90,7 +91,7 @@ class Minesweeper
     @mines = (1..@mine_count).map { |i| i = Mine.new(@proxi) }
     @row = 0 
     @col = 0
-    @detector = Detector.new(@proxi)
+    @detector = Detector.new(@board, @proxi)
     game
   end
 end
