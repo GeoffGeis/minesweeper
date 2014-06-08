@@ -17,29 +17,12 @@ class Detector
   end
 
   def detect
-    unless @row < 0 || @row > @proxi.size - 1 
-      @value += 1 if @proxi.board[@row - 2][@col - 1] == "*"
-    end
-    unless (@row < 0 || @row > @proxi.size - 1) || (@col < 0 || @col > @proxi.size - 1)
-      @value += 1 if @proxi.board[@row - 2][@col - 2] == "*"
-    end
-    unless @col < 0 || @col > @proxi.size - 1
-      @value += 1 if @proxi.board[@row - 1][@col - 2] == "*"
-    end
-    unless (@row < 0 || @row > @proxi.size - 1) || (@col < 0 || @col > @proxi.size - 1)
-      @value += 1 if @proxi.board[@row][@col - 2] == "*"
-    end
-    unless @row < 0 || @row > @proxi.size - 1 
-      @value += 1 if @proxi.board[@row][@col - 1] == "*"
-    end
-    unless (@row < 0 || @row > @proxi.size - 1) || (@col < 0 || @col > @proxi.size - 1)
-      @value += 1 if @proxi.board[@row][@col] == "*"
-    end
-    unless @col < 0 || @col > @proxi.size - 1
-      @value += 1 if @proxi.board[@row - 1][@col] == "*"
-    end
-    unless (@row < 0 || @row > @proxi.size - 1) || (@col < 0 || @col > @proxi.size - 1)
-      @value += 1 if @proxi.board[@row - 2][@col] == "*"
+    (@row - 1..@row + 1).each do |r|
+      (@col - 1..@col + 1).each do |c|
+        unless (r - 1 < 0 || r - 1 > @proxi.size - 1) || (c - 1 < 0 || c - 1 > @proxi.size - 1)
+          @value += 1 if @proxi.board[r - 1][c - 1] == "*"
+        end
+      end
     end
   end
 
