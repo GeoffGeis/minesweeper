@@ -36,10 +36,12 @@ class Detector
     if @proxi.board[@row - 1][@col - 1] == "0"
       (@row - 1..@row + 1).each do |r|
         (@col - 1..@col + 1).each do |c|
-          @row, @col = r, c
-          detect
-          map_position
-          recursion
+          unless (r - 1 < 0 || r - 1 > @proxi.size - 1) || (c - 1 < 0 || c - 1 > @proxi.size - 1)
+            @row, @col = r, c
+            detect
+            map_position
+            recursion
+          end
         end
       end
     end
