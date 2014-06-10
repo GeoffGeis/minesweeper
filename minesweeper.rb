@@ -28,6 +28,9 @@ class Minesweeper
     @row = gets.chomp.to_i
     puts "pick a col:"
     @col = gets.chomp.to_i
+    if (@row - 1 < 0 || @row - 1 > @proxi.size - 1) || (@col - 1 < 0 || @col - 1 > @proxi.size - 1)
+      game
+    end
     puts "flag position? (y/n)"
     flag = gets.chomp.downcase.to_s
     if flag == "y"
