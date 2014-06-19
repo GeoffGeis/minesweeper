@@ -5,7 +5,7 @@ require './detector.rb'
 class Minesweeper
   attr_accessor :debug, :board, :proxi, :mine_count, :mines, :row, :col, :detector
 
-  def initialize(debug = true)
+  def initialize(debug = false)
     @debug = debug
     puts "Minefield size:" 
     @board = Board.new
@@ -45,7 +45,6 @@ class Minesweeper
       end
       @detector.detect
       @detector.map_position
-      @detector.recursion
       @detector.reset
       check_board
     end
