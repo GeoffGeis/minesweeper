@@ -5,7 +5,7 @@ require './detector.rb'
 class Minesweeper
   attr_accessor :debug, :board, :proxi, :mine_count, :mines, :row, :col, :detector
 
-  def initialize(debug = false)
+  def initialize(debug = true)
     @debug = debug
     puts "Minefield size:" 
     @board = Board.new
@@ -36,15 +36,12 @@ class Minesweeper
     if flag == "y"
       flag_position
     else
-      @detector.row = @row 
-      @detector.col = @col 
-      if @detector.mine? == true
+      if @detector.mine?(@row, @col) == true
         @proxi.print_board
         puts "game over"
         continue?
       end
-      @detector.detect
-      @detector.map_position
+      @detector.detect(@row, @col)
       @detector.reset
       check_board
     end
