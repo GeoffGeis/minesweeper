@@ -3,15 +3,13 @@ require './mine.rb'
 require './detector.rb'
 
 class Minesweeper
-  attr_accessor :debug, :board, :proxi, :mine_count, :mines, :row, :col, :detector
-
-  def initialize(debug = false)
+  def initialize(debug = true)
     @debug = debug
     puts "Minefield size:" 
     @board = Board.new
     @proxi = Board.new(@board.size)
     @mine_count = @board.size * 2
-    @mines = (1..@mine_count).map { |i| i = Mine.new(@proxi) }
+    (1..@mine_count).each { |i| i = Mine.new(@proxi) }
     @row = 0 
     @col = 0
     @detector = Detector.new(@board, @proxi)
@@ -86,8 +84,8 @@ class Minesweeper
     puts "Minefield size:" 
     @board = Board.new
     @proxi = Board.new(@board.size)
-    @mine_count = @board.size * 2
-    @mines = (1..@mine_count).map { |i| i = Mine.new(@proxi) }
+    mine_count = @board.size * 2
+    (1..mine_count).each { |i| i = Mine.new(@proxi) }
     @row = 0 
     @col = 0
     @detector = Detector.new(@board, @proxi)

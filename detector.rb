@@ -1,6 +1,4 @@
 class Detector
-  attr_accessor :board, :proxi, :value
-
   def initialize(board, proxi)
     @board = board
     @proxi = proxi

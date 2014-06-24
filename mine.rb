@@ -1,6 +1,4 @@
 class Mine
-  attr_accessor :proxi, :row, :col
-
   def initialize(proxi)
     @proxi = proxi
     @row = 0
