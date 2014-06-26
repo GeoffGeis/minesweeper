@@ -3,7 +3,7 @@ require './mine.rb'
 require './detector.rb'
 
 class Minesweeper
-  def initialize(debug = true)
+  def initialize(debug = false)
     @debug = debug
     puts "Minefield size:" 
     @board = Board.new
