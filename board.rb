@@ -14,11 +14,14 @@ class Integer
 end
 
 class Board
-  attr_accessor :size, :board
+  attr_accessor :size, :board, :visual_board
 
   def initialize(size)
     @size = size
+    # board  0 = empty | 1 = mine | 2 = flag
     @board = make_board(size)
+    # visual_board -1 = L (empty) | -2 = ! (flag) | -3 = * (mine) | > 0 numbers are counts of mines
+    @visual_board = @board.map { |row| row.map { |e| -1 } }
   end
 
   def make_board(size)
@@ -33,9 +36,28 @@ class Board
     end
     field
   end
-
-  def print_board
+  
+  def print_debug_board
     @board.map { |row| puts row.join }
+  end
+  
+  def print_board
+    @visual_board.map do |row|
+      visual = row.map do |space|
+        case space
+        when -1
+          "L"
+        when -2
+          "!"
+        when -3
+          "*"
+        else
+          space
+        end
+      end
+      puts visual.join
+    end
+    true
   end
   
   def get_large_number
