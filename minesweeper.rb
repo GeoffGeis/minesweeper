@@ -1,6 +1,4 @@
 require './board.rb'
-require './mine.rb'
-require './detector.rb'
 require './position.rb'
 
 class NilClass
