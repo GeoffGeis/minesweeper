@@ -1,40 +1,48 @@
-class Integer
-  def to_base(base=10)
-    return [0] if zero?
-    raise ArgumentError, 'base must be greater than zero' unless base > 0
-    num = abs
-    return [1] * num if base == 1
-    [].tap do |digits|
-      while num > 0
-        digits.unshift num % base
-        num /= base
-      end
-    end
-  end
-end
+require './position.rb'
 
 class Board
-  attr_accessor :size, :board, :visual_board
+  attr_accessor :board, :visual_board
 
   def initialize(size)
-    @size = size
     # board  0 = empty | 1 = mine | 2 = flag
     @board = make_board(size)
-    # visual_board -1 = L (empty) | -2 = ! (flag) | -3 = * (mine) | > 0 numbers are counts of mines
-    @visual_board = @board.map { |row| row.map { |e| -1 } }
+    @random = Random.new
+    # visual_board -1 = * (mine) | -2 = ! (flag) | -3 = L (untouched) | >= 0 numbers are counts of mines
+    @visual_board = @board.map { |row| row.map { |e| -3 } }
+    @mine_count = @board.size * 4
+    @mine_count.times do
+      place_mine
+    end
+  end
+
+  def size
+    @board.length
   end
 
   def make_board(size)
-    binary = get_large_number.to_base 2
-    field = []
+    # [[0,0,0,0],[0,1,1,0],[0,1,1,0],[0,0,0,0]]
+    board = []
     size.times do
       row = []
       size.times do
-        row.push binary.pop
+        row.push 0
       end
-      field.push row
+      board.push row
     end
-    field
+    board
+  end
+  
+  def place_mine
+    position = Position.new(@random.rand(1..size),@random.rand(1..size))
+    if is_mine? position
+      place_mine
+    else
+      @board[position.y-1][position.x-1] = 1
+    end
+  end
+  
+  def flag_position(position)
+    
   end
   
   def print_debug_board
@@ -46,13 +54,13 @@ class Board
       visual = row.map do |space|
         case space
         when -1
-          "L"
+          " * "
         when -2
-          "!"
+          " ! "
         when -3
-          "*"
+          " L "
         else
-          space
+          " #{space} "
         end
       end
       puts visual.join
@@ -60,7 +68,82 @@ class Board
     true
   end
   
-  def get_large_number
-    rand(2**32..2**640-1)**24
+  # clears out non mines
+  def detect( position )
+    target_number = 0
+    # return if target_number == replacement_number
+    # create an array to keep track of positions looked at 
+    # -1 unprocessed -2 processed 
+    processed = @board.map { |row| row.map { |e| -1 } }
+    q = []
+    q.push position
+    until q.empty?
+      # Get a position
+      n = q.pop
+      # Filter out negative indexes
+      next if n.y-1 < 0 || n.x-1 < 0
+      # Check if this position is clear
+      if @board[n.y-1][n.x-1] == target_number
+        # if so set it = to what we want
+        # @board[n.y-1][n.x-1] = replacement_number
+        @visual_board[n.y-1][n.x-1] = count_nearby(n)
+        # update proccessed so we know we've seen it
+        processed[n.y-1][n.x-1] = -2 
+        # get directions to check
+        to_check = get_four_directions(n)
+        to_check.each do |direction|
+          if processed[direction.y-1][direction.x-1] != nil && processed[direction.y-1][direction.x-1] == -1
+            q.push(direction)
+          end
+        end
+      end
+    end
   end
+  
+  def count_nearby(position)
+    count = 0
+    to_count = get_eight_directions(position)
+    to_count.each do |direction|
+      next if direction.y-1 < 0 || direction.x-1 < 0
+      if @board[direction.y-1][direction.x-1] != nil && @board[direction.y-1][direction.x-1] == 1
+        count += 1
+      end
+    end
+    count
+  end
+  
+  def get_eight_directions(start)
+    x = start.x
+    y = start.y
+    directions = []
+    directions.push Position.new(x-1, y,'w')
+    directions.push Position.new(x+1, y,'e')
+    directions.push Position.new(x,y+1,'s')
+    directions.push Position.new(x,y-1,'n')
+    directions.push Position.new(x-1,y-1,'nw')
+    directions.push Position.new(x+1,y-1,'ne')
+    directions.push Position.new(x-1,y+1,'sw')
+    directions.push Position.new(x+1,y+1,'se')
+    directions
+  end
+
+  def get_four_directions(start)
+    x = start.x
+    y = start.y
+    directions = []
+    directions.push Position.new(x-1, y,'west')
+    directions.push Position.new(x+1, y,'east')
+    directions.push Position.new(x,y+1,'south')
+    directions.push Position.new(x,y-1,'north')
+    directions
+  end
+  
+  def is_mine? (position)
+    @board[position.y-1][position.x-1] == 1
+  end
+  
+  def is_valid_position? (position)
+    position.x-1 < 0 || position.y-1 < 0 || @board[position.y-1][position.x-1] == nil
+  end  
+  
 end
