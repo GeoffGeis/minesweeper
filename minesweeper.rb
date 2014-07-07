@@ -39,14 +39,11 @@ class Minesweeper
       @board.flag_position position
       win if @board.has_won?
     else
-      if @board.is_mine?(position)
-        # TODO reveal board 
-        puts "game over"
-        continue?
-      end
+      lose if @board.is_mine?(position)
       @board.detect position
-      win if @board.check_board.has_won?
+      win if @board.has_won?
     end
+    game
   end
   
   def lose
@@ -73,14 +70,13 @@ class Minesweeper
   end
 
   def reset
-    puts "Minefield size:" 
-    @board = Board.new
-    @proxi = Board.new(@board.size)
-    mine_count = @board.size * 2
-    (1..mine_count).each { |i| i = Mine.new(@proxi) }
-    @row = 0 
-    @col = 0
-    @detector = Detector.new(@board, @proxi)
+    puts "Minefield size:"
+    size = gets.chop.to_i
+    @board = Board.new size
+    # @detector = Detector.new(@board, @proxi)
+    puts "Lets play minesweeper!"
     game
   end
 end
+
+m = Minesweeper.new true

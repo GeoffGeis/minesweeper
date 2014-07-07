@@ -9,8 +9,8 @@ class Board
     @random = Random.new
     # visual_board -1 = * (mine) | -2 = ! (flag) | -3 = L (untouched) | >= 0 numbers are counts of mines
     @visual_board = @board.map { |row| row.map { |e| -3 } }
-    @mine_count = @board.size * 4
-    @mine_count.times do
+    @mine_count = @board.size * 2
+    @mine_count.to_i.times do
       place_mine
     end
   end
