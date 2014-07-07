@@ -17,9 +17,7 @@ class Minesweeper
   end
 
   def game
-    if @debug 
-      @board.print_debug_board
-    end
+    @board.print_debug_board if @debug 
     @board.print_board
     puts "pick a row:"
     row = gets.chomp.to_i
