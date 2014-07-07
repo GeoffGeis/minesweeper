@@ -85,6 +85,8 @@ class Board
     true
   end
   
+  
+  
   # clears out non mines
   def detect( position )
     target_number = 0
