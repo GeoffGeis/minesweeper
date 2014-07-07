@@ -13,12 +13,7 @@ class Minesweeper
   attr_reader :board
   def initialize(debug = false)
     @debug = debug
-    puts "Minefield size:"
-    size = gets.chop.to_i
-    @board = Board.new size
-    # @detector = Detector.new(@board, @proxi)
-    puts "Lets play minesweeper!"
-    game
+    start
   end
 
   def game
@@ -62,14 +57,14 @@ class Minesweeper
     puts "continue? (y/n)"
     continue = gets.chomp.downcase.to_s
     if continue == 'y'
-      reset
+      start
     else
       puts "see you later"
       exit
     end
   end
 
-  def reset
+  def start
     puts "Minefield size:"
     size = gets.chop.to_i
     @board = Board.new size
