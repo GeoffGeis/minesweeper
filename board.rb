@@ -42,7 +42,24 @@ class Board
   end
   
   def flag_position(position)
-    
+    @visual_board[position.y-1][position.x-1] = -2
+    @mine_count -= 1 if @board[position.y-1][position.x-1] == 1
+  end
+  
+  def has_won?
+    dirty = false
+    @visual_board.each do |row|
+      dirty = row.any? { |e| e == -3 }
+    end
+    return @mine_count == 0 && !dirty
+  end
+  
+  def is_mine? (position)
+    @board[position.y-1][position.x-1] == 1
+  end
+  
+  def is_valid_position? (position)
+    position.x-1 < 0 || position.y-1 < 0 || @board[position.y-1][position.x-1] == nil
   end
   
   def print_debug_board
@@ -84,8 +101,7 @@ class Board
       next if n.y-1 < 0 || n.x-1 < 0
       # Check if this position is clear
       if @board[n.y-1][n.x-1] == target_number
-        # if so set it = to what we want
-        # @board[n.y-1][n.x-1] = replacement_number
+        # if so set visual to what we want and initiate counting
         @visual_board[n.y-1][n.x-1] = count_nearby(n)
         # update proccessed so we know we've seen it
         processed[n.y-1][n.x-1] = -2 
@@ -137,13 +153,5 @@ class Board
     directions.push Position.new(x,y-1,'north')
     directions
   end
-  
-  def is_mine? (position)
-    @board[position.y-1][position.x-1] == 1
-  end
-  
-  def is_valid_position? (position)
-    position.x-1 < 0 || position.y-1 < 0 || @board[position.y-1][position.x-1] == nil
-  end  
   
 end

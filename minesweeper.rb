@@ -37,41 +37,30 @@ class Minesweeper
     flag = gets.chomp.downcase.to_s
     if flag == "y"
       @board.flag_position position
+      win if @board.has_won?
     else
       if @board.is_mine?(position)
-        # TODO reveal board
+        # TODO reveal board 
         puts "game over"
         continue?
       end
       @board.detect position
-      @board.check_board
+      win if @board.check_board.has_won?
     end
   end
-
-  def flag_position
-    if @proxi.board[@row - 1][@col - 1] == "*"
-      @mine_count -= 1
-      @board.board[@row - 1][@col - 1] = "!"
-      check_board
-    else
-      @board.board[@row - 1][@col - 1] = "!"
-      game
-    end
+  
+  def lose
+    # TODO write function to map visual board fully to contents of board and call it here
+    puts "you lose"
+    continue?
   end
-
-  def check_board
-    if @mine_count == 0 
-      unless ["L"].any? { @proxi.board }
-        game
-      end
-      @proxi.print_board
-      puts "you win"
-      continue?
-    else
-      game
-    end
+  
+  def win
+    # TODO write function to map visual board fully to contents of board here
+    puts "you win"
+    continue?
   end
-
+  
   def continue?
     puts "continue? (y/n)"
     continue = gets.chomp.downcase.to_s
