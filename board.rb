@@ -25,16 +25,16 @@ class Board
     size.times do
       row = []
       size.times do
-        row.push 0
+        row << 0
       end
-      board.push row
+      board << row
     end
     board
   end
   
   def place_mine
     position = Position.new(@random.rand(1..size),@random.rand(1..size))
-    if is_mine? position
+    if is_mine?(position)
       place_mine
     else
       @board[position.y-1][position.x-1] = 1
@@ -54,11 +54,11 @@ class Board
     return @mine_count == 0 && !dirty
   end
   
-  def is_mine? (position)
+  def is_mine?(position)
     @board[position.y-1][position.x-1] == 1
   end
   
-  def is_valid_position? (position)
+  def is_valid_position?(position)
     position.x-1 < 0 || position.y-1 < 0 || @board[position.y-1][position.x-1] == nil
   end
   
@@ -71,13 +71,13 @@ class Board
       visual = row.map do |space|
         case space
         when -1
-          " * "
+          "*"
         when -2
-          " ! "
+          "!"
         when -3
-          " L "
+          "L"
         else
-          " #{space} "
+          "#{space}"
         end
       end
       puts visual.join
@@ -85,17 +85,15 @@ class Board
     true
   end
   
-  
-  
   # clears out non mines
-  def detect( position )
+  def detect(position)
     target_number = 0
     # return if target_number == replacement_number
     # create an array to keep track of positions looked at 
     # -1 unprocessed -2 processed 
     processed = @board.map { |row| row.map { |e| -1 } }
     q = []
-    q.push position
+    q << position
     until q.empty?
       # Get a position
       n = q.pop
@@ -111,7 +109,7 @@ class Board
         to_check = get_four_directions(n)
         to_check.each do |direction|
           if processed[direction.y-1][direction.x-1] != nil && processed[direction.y-1][direction.x-1] == -1
-            q.push(direction)
+            q << direction
           end
         end
       end
@@ -134,14 +132,14 @@ class Board
     x = start.x
     y = start.y
     directions = []
-    directions.push Position.new(x-1, y,'w')
-    directions.push Position.new(x+1, y,'e')
-    directions.push Position.new(x,y+1,'s')
-    directions.push Position.new(x,y-1,'n')
-    directions.push Position.new(x-1,y-1,'nw')
-    directions.push Position.new(x+1,y-1,'ne')
-    directions.push Position.new(x-1,y+1,'sw')
-    directions.push Position.new(x+1,y+1,'se')
+    directions << Position.new(x-1, y,'w')
+    directions << Position.new(x+1, y,'e')
+    directions << Position.new(x,y+1,'s')
+    directions << Position.new(x,y-1,'n')
+    directions << Position.new(x-1,y-1,'nw')
+    directions << Position.new(x+1,y-1,'ne')
+    directions << Position.new(x-1,y+1,'sw')
+    directions << Position.new(x+1,y+1,'se')
     directions
   end
 
@@ -149,11 +147,10 @@ class Board
     x = start.x
     y = start.y
     directions = []
-    directions.push Position.new(x-1, y,'west')
-    directions.push Position.new(x+1, y,'east')
-    directions.push Position.new(x,y+1,'south')
-    directions.push Position.new(x,y-1,'north')
+    directions << Position.new(x-1, y,'west')
+    directions << Position.new(x+1, y,'east')
+    directions << Position.new(x,y+1,'south')
+    directions << Position.new(x,y-1,'north')
     directions
   end
-  
 end

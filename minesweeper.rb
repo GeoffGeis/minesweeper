@@ -9,9 +9,18 @@ end
 
 class Minesweeper
   attr_reader :board
+
   def initialize(debug = false)
     @debug = debug
     start
+  end
+
+  def start
+    puts "Minefield size:"
+    size = gets.chop.to_i
+    @board = Board.new(size)
+    puts "Lets play minesweeper!"
+    game
   end
 
   def game
@@ -21,17 +30,16 @@ class Minesweeper
     row = gets.chomp.to_i
     puts "pick a col:"
     col = gets.chomp.to_i
-    position = Position.new col, row
+    position = Position.new(col, row)
     game if @board.is_valid_position?(position)
-    
     puts "flag position? (y/n)"
     flag = gets.chomp.downcase.to_s
     if flag == "y"
-      @board.flag_position position
+      @board.flag_position(position)
       win if @board.has_won?
     else
       lose if @board.is_mine?(position)
-      @board.detect position
+      @board.detect(position)
       win if @board.has_won?
     end
     game
@@ -58,16 +66,7 @@ class Minesweeper
       puts "see you later"
       exit
     end
-  end
-
-  def start
-    puts "Minefield size:"
-    size = gets.chop.to_i
-    @board = Board.new size
-    # @detector = Detector.new(@board, @proxi)
-    puts "Lets play minesweeper!"
-    game
-  end
+  end 
 end
 
-m = Minesweeper.new true
+m = Minesweeper.new(true)
