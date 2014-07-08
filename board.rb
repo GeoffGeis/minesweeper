@@ -10,9 +10,7 @@ class Board
     # visual_board -1 = * (mine) | -2 = ! (flag) | -3 = L (untouched) | >= 0 numbers are counts of mines
     @visual_board = @board.map { |row| row.map { |e| -3 } }
     @mine_count = @board.size * 2
-    @mine_count.to_i.times do
-      place_mine
-    end
+    (1..@mine_count).each { place_mine }
   end
 
   def size
@@ -22,9 +20,9 @@ class Board
   def make_board(size)
     # [[0,0,0,0],[0,1,1,0],[0,1,1,0],[0,0,0,0]]
     board = []
-    size.times do
+    (1..size).each do 
       row = []
-      size.times do
+      (1..size).each do 
         row << 0
       end
       board << row
