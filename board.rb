@@ -31,7 +31,7 @@ class Board
   end
   
   def place_mine
-    position = Position.new(@random.rand(1..size),@random.rand(1..size))
+    position = Position.new(@random.rand(1..size), @random.rand(1..size))
     if is_mine?(position)
       place_mine
     else
