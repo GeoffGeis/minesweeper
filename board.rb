@@ -82,9 +82,18 @@ class Board
     end
     true
   end
+
+  def detect(position)
+    count = count_nearby(position)
+    if count == 0
+      floodfill(position)
+    else
+      @visual_board[position.y-1][position.x-1] = count
+    end
+  end
   
   # clears out non mines
-  def detect(position)
+  def floodfill(position)
     target_number = 0
     # return if target_number == replacement_number
     # create an array to keep track of positions looked at 
