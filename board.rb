@@ -73,7 +73,7 @@ class Board
         when -2
           "!"
         when -3
-          "L"
+          "."
         else
           "#{space}"
         end
