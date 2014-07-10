@@ -109,9 +109,11 @@ class Board
       # Check if this position is clear
       if @board[n.y-1][n.x-1] == target_number
         # if so set visual to what we want and initiate counting
-        @visual_board[n.y-1][n.x-1] = count_nearby(n)
+        count = count_nearby(n)
+        @visual_board[n.y-1][n.x-1] = count
         # update proccessed so we know we've seen it
         processed[n.y-1][n.x-1] = -2 
+        next if count > 0
         # get directions to check
         to_check = get_four_directions(n)
         to_check.each do |direction|
