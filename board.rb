@@ -85,10 +85,21 @@ class Board
     true
   end
   
-  
+  #detect
+  def detect( position )
+    count = count_nearby(position)
+    if count == 0
+      # in this case had you chose anything this would never get called on the screen shot example since
+      # all spots were near a mine anyone you chose would have a count > than 0
+      floodfill(position)
+    else
+      # in this case (via array shown in the screenshot you sent) it will set it to 6 and not floodfill
+      @visual_board[n.y-1][n.x-1] = count
+    end
+  end
   
   # clears out non mines
-  def detect( position )
+  def floodfill( position )
     target_number = 0
     # return if target_number == replacement_number
     # create an array to keep track of positions looked at 
