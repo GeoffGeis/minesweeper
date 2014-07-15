@@ -144,7 +144,6 @@ class Board
             q << direction
           end
         end
-      
       end
     end
   end
