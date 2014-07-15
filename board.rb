@@ -31,7 +31,7 @@ class Board
   end
   
   def place_mine
-    position = Position.new(@random.rand(1..size),@random.rand(1..size))
+    position = Position.new(@random.rand(1..size), @random.rand(1..size))
     if is_mine?(position)
       place_mine
     else
@@ -84,7 +84,7 @@ class Board
         when -2
           "!"
         when -3
-          "L"
+          "."
         else
           "#{space}"
         end
@@ -92,6 +92,15 @@ class Board
       puts visual.join
     end
     true
+  end
+
+  def detect(position)
+    count = count_nearby(position)
+    if count == 0
+      floodfill(position)
+    else
+      @visual_board[position.y-1][position.x-1] = count
+    end
   end
   
   #detect
