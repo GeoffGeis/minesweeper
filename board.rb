@@ -65,7 +65,6 @@ class Board
   end
   
   def reveal_board
-    puts "revealing board"
     @board.each_with_index do |row, y|
       row.each_with_index do |col, x|
         dataValue = @board[y][x]
