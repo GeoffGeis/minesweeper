@@ -67,8 +67,8 @@ class Board
   def reveal_board
     @board.each_with_index do |row, y|
       row.each_with_index do |col, x|
-        dataValue = @board[y][x]
-        @visual_board[y][x] = -1 if dataValue == 1 
+        datavalue = @board[y][x]
+        @visual_board[y][x] = -1 if datavalue == 1 
       end
     end
     print_board
@@ -103,7 +103,7 @@ class Board
   end
   
   #detect
-  def detect( position )
+  def detect(position)
     count = count_nearby(position)
     if count == 0
       # in this case had you chose anything this would never get called on the screen shot example since
@@ -116,7 +116,7 @@ class Board
   end
   
   # clears out non mines
-  def floodfill( position )
+  def floodfill(position)
     target_number = 0
     # return if target_number == replacement_number
     # create an array to keep track of positions looked at 
@@ -144,7 +144,6 @@ class Board
             q << direction
           end
         end
-      
       end
     end
   end
